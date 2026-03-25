@@ -5,7 +5,7 @@ import {
   shopifyApp,
   LATEST_API_VERSION,
 } from "@shopify/shopify-app-remix";
-import { MemorySessionStorage } from "@shopify/shopify-app-remix";
+import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 import { prisma } from "./db.server";
 
 const shopify = shopifyApp({
