@@ -1,0 +1,21 @@
+client_id = "c9f9779cdedb651e5744f8ad63c1dfaa"
+name = "KingStore Support Portal"
+handle = "kingstore-support"
+application_url = "https://your-app-url.vercel.app"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "kngstore-8298.myshopify.com"
+
+[access_scopes]
+scopes = "read_products,write_customers,read_orders"
+
+[auth]
+redirect_urls = [
+  "https://your-app-url.vercel.app/auth/callback",
+  "https://your-app-url.vercel.app/auth/shopify/callback"
+]
+
+[pos]
+embedded = false
