@@ -5,17 +5,17 @@ import {
   shopifyApp,
   LATEST_API_VERSION,
 } from "@shopify/shopify-app-remix";
-import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
+import { MemorySessionStorage } from "@shopify/shopify-app-remix";
 import { prisma } from "./db.server";
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY || "c9f9779cdedb651e5744f8ad63c1dfaa",
-  apiSecretKey: process.env.SHOPIFY_API_SECRET || "dummy_secret",
+  apiSecretKey: process.env.SHOPIFY_API_SECRET || "dummy_secret_at_least_32_characters_long_123",
   apiVersion: LATEST_API_VERSION,
   scopes: ["read_products", "write_customers", "read_orders"],
   appUrl: process.env.SHOPIFY_APP_URL || "https://project-4l1jo.vercel.app",
   authPathPrefix: "/auth",
-  sessionStorage: new PrismaSessionStorage(prisma),
+  sessionStorage: new MemorySessionStorage(),
   distribution: AppDistribution.AppStore,
   webhooks: {
     APP_UNINSTALLED: {

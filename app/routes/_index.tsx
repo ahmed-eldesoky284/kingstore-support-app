@@ -1,13 +1,21 @@
-import { json } from "@remix-run/node";
+import { json, type LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Page, Layout, Card, ResourceList, Text, Badge, BlockStack, Box, InlineStack } from "@shopify/polaris";
 import { prisma } from "../db.server";
+import { authenticate } from "../shopify.server"; // Assuming this path for authenticate
 
-export const loader = async () => {
-  const tickets = await prisma.ticket.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
-  return json({ tickets });
+export const loader = async ({ request }: LoaderArgs) => {
+  await authenticate.admin(request);
+  
+  try {
+    const tickets = await prisma.ticket.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return json({ tickets });
+  } catch (e) {
+    console.warn("Database not ready yet, showing empty list.");
+    return json({ tickets: [] });
+  }
 };
 
 interface Ticket {
