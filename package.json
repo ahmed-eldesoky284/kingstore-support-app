@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "shopify app dev",
-    "build": "prisma generate && shopify app build",
+    "build": "prisma generate && remix build",
     "deploy": "shopify app deploy",
     "prisma:push": "prisma db push"
   },
