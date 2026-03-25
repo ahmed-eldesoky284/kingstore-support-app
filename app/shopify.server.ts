@@ -5,7 +5,7 @@ import {
   shopifyApp,
   LATEST_API_VERSION,
 } from "@shopify/shopify-app-remix";
-import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
+import { SimpleMemorySessionStorage } from "./lib/memory-storage";
 import { prisma } from "./db.server";
 
 const shopify = shopifyApp({
@@ -15,7 +15,7 @@ const shopify = shopifyApp({
   scopes: ["read_products", "write_customers", "read_orders"],
   appUrl: process.env.SHOPIFY_APP_URL || "https://project-4l1jo.vercel.app",
   authPathPrefix: "/auth",
-  sessionStorage: new MemorySessionStorage(),
+  sessionStorage: new SimpleMemorySessionStorage() as any,
   distribution: AppDistribution.AppStore,
   webhooks: {
     APP_UNINSTALLED: {
