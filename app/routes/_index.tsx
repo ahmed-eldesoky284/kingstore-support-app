@@ -5,17 +5,10 @@ import { prisma } from "../db.server";
 import { authenticate } from "../shopify.server"; // Assuming this path for authenticate
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
+  // Comment out authentication for diagnostic landing page
+  // await authenticate.admin(request);
   
-  try {
-    const tickets = await prisma.ticket.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return json({ tickets });
-  } catch (e) {
-    console.warn("Database not ready yet, showing empty list.");
-    return json({ tickets: [] });
-  }
+  return json({ ok: true });
 };
 
 interface Ticket {
@@ -28,46 +21,15 @@ interface Ticket {
 }
 
 export default function Index() {
-  const { tickets } = useLoaderData<typeof loader>() as { tickets: Ticket[] };
-
   return (
-    <Page title="KingStore Support Hub" subtitle="Centralized management for royal inquiries.">
+    <Page title="KingStore Support App">
       <Layout>
         <Layout.Section>
-          <Card padding="0">
-            <ResourceList
-              resourceName={{ singular: 'ticket', plural: 'tickets' }}
-              items={tickets}
-              renderItem={(item: Ticket) => {
-                const { id, customer, message, status, channel, createdAt } = item;
-                const date = new Date(createdAt).toLocaleDateString();
-                
-                return (
-                  <ResourceList.Item id={id.toString()} accessibilityLabel={`View details for ${customer}`} onClick={() => {}}>
-                    <Box padding="400">
-                        <InlineStack align="space-between">
-                            <BlockStack gap="200">
-                                <Text as="h2" variant="bodyMd" fontWeight="bold">{customer}</Text>
-                                <Text as="p" variant="bodySm" tone="subdued">"{message}"</Text>
-                                <InlineStack gap="200">
-                                    <Badge tone={status === 'open' ? 'critical' : 'attention'}>{status.toUpperCase()}</Badge>
-                                    <Badge tone="info">{channel}</Badge>
-                                </InlineStack>
-                            </BlockStack>
-                            <Text as="span" variant="bodyXs" tone="subdued">{date}</Text>
-                        </InlineStack>
-                    </Box>
-                  </ResourceList.Item>
-                );
-              }}
-            />
-            {tickets.length === 0 && (
-                <Box padding="1000">
-                    <BlockStack align="center">
-                        <Text as="p" variant="bodyMd" tone="subdued">لا توجد رسائل حالياً (No messages yet)</Text>
-                    </BlockStack>
-                </Box>
-            )}
+          <Card padding="500">
+            <BlockStack gap="400">
+              <Text as="h2" variant="headingMd">التطبيق يعمل بنجاح! 🚀</Text>
+              <Text as="p">الخادم متصل الآن. للبدء، يرجى تهيئة المتغيرات (API Key & Secret) في إعدادات Vercel.</Text>
+            </BlockStack>
           </Card>
         </Layout.Section>
       </Layout>
