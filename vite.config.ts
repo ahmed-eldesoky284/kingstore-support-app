@@ -16,9 +16,4 @@ export default defineConfig({
   ssr: {
     external: ["@prisma/client", ".prisma/client"],
   },
-  build: {
-    rollupOptions: {
-      external: ["@prisma/client", ".prisma/client"],
-    },
-  },
 });

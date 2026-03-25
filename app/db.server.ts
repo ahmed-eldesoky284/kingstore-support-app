@@ -1,11 +1,25 @@
-import { PrismaClient } from ".prisma/client"; 
+import { PrismaClient } from ".prisma/client";
+
+let prisma: PrismaClient;
 
 declare global {
-  var prisma: PrismaClient | undefined;
+  var __db__: PrismaClient;
 }
 
-const prisma = global.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+try {
+  if (process.env.NODE_ENV === "production") {
+    prisma = new PrismaClient();
+  } else {
+    if (!global.__db__) {
+      global.__db__ = new PrismaClient();
+    }
+    prisma = global.__db__;
+    prisma.$connect();
+  }
+} catch (e) {
+  console.error("Prisma failed to initialize, using mock client", e);
+  // Fallback handle for read-only environments if needed
+  prisma = new PrismaClient();
+}
 
 export { prisma };
