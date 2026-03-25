@@ -13,4 +13,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  ssr: {
+    external: ["@prisma/client", ".prisma/client"],
+  },
 });
